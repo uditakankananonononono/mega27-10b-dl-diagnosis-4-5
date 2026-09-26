@@ -1,0 +1,9 @@
+You are an ISEF-level computational biology advisor. I am building two deep-learning DIAGNOSIS projects (diseases 4 and 5 of a 5-disease suite). Existing suite: 26 clinical datasets, MLP/1D-CNN/GCN/GAT over patient-similarity graphs, bootstrap CIs, honest negatives preserved.
+
+Hard constraints: CPU-only, ~1GB RAM, public accession-level data only. Each project must (a) beat a named published baseline under matched evaluation, and (b) produce a real new discovery.
+
+Candidate A: PCOS diagnosis from clinical+hormonal features (Kaggle PCOS, 541 patients, 41 features). Problem: the best published result on this exact dataset claims 100% accuracy (Diagnostics 2023;13(8):1506) but its pipeline applies SMOTE-ENN resampling and feature selection BEFORE the train/test split - textbook leakage. Is exposing that leakage and winning head-to-head under a leakage-free matched protocol a strong, defensible ISEF contribution, or does the saturated 100% claim kill this dataset?
+
+Candidate B: Alzheimer's disease from OASIS-1 MRI (416 subjects; 2D-slice CNN to fit 1GB RAM). Published CNNs claim 90-99%.
+
+Questions: 1) For each candidate, is the benchmark-beat claim defensible as framed? 2) If you would swap either disease, name the replacement with its public dataset and why it has real headroom (avoid saturated benchmarks). 3) For your two final picks, state the single strongest NEW DISCOVERY angle for each. Be concrete and critical, not encouraging.

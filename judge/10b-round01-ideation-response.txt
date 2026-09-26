@@ -1,0 +1,334 @@
+I will judge these as an ISEF computational-biology project pair, not as “can this produce a paper-like result.” The key distinction is:
+
+A benchmark correction / leakage audit can be scientifically valuable, but it is usually weaker than a genuine predictive advance unless you demonstrate that the corrected benchmark changes conclusions broadly.
+
+A “beats published baseline” claim is only defensible if the baseline is reimplemented or evaluated under the exact same split, preprocessing, and metric.
+
+For ISEF, a discovery cannot simply be “our model is better”; it needs a biological or clinical insight extracted from the model.
+
+Candidate A — PCOS diagnosis (Kaggle PCOS, n=541, 41 features)
+1. Is the benchmark-beat claim defensible?
+
+Partially, but not in the form “we beat the 100% model.”
+
+The 100% accuracy result is almost certainly not a meaningful ceiling. If feature selection and SMOTE-ENN occur before the train/test split, the test set is contaminated. A leakage-free reproduction could legitimately show that the published number collapses.
+
+However:
+
+“We exposed leakage and achieved higher accuracy than the published 100% baseline” is not defensible.
+
+A judge will immediately ask:
+
+“How can anything beat 100%?”
+
+The correct framing is:
+
+“We perform the first leakage-controlled reassessment of PCOS ML on this benchmark and show that previous performance estimates are inflated; our model achieves the best performance under a preregistered leakage-free protocol.”
+
+That is a methods contribution, not a normal benchmark victory.
+
+The bigger problem
+
+The dataset itself is weak for an ISEF flagship.
+
+Problems:
+
+Issue	Why judges care
+n=541	small tabular dataset
+Kaggle-derived	unclear clinical provenance
+41 features	many models will memorize patterns
+single cohort	no external validation
+hormonal features	diagnosis already encoded biologically
+
+A GNN/patient graph architecture is unlikely to add much. With 541 patients, graph edges may mostly encode demographic similarity rather than biology.
+
+Could it still work?
+
+Yes, but only if the discovery angle is strong.
+
+A better contribution would be:
+
+“Leakage-resistant interpretable PCOS phenotyping reveals clinically meaningful subgroups.”
+
+Examples:
+
+Cluster patients into metabolic vs reproductive PCOS phenotypes.
+
+Identify whether hormonal markers predict diagnosis independently of anthropometric variables.
+
+Use SHAP/Integrated Gradients + stability analysis across bootstrap samples.
+
+But as a diagnosis model benchmark project, I would not choose it.
+
+Verdict:
+
+Scientific validity: ★★★★☆
+
+Benchmark potential: ★★☆☆☆
+
+ISEF strength: ★★☆☆☆
+
+Candidate B — Alzheimer's disease from OASIS-1 MRI
+1. Is the benchmark-beat claim defensible?
+
+Much more defensible than PCOS, but still problematic.
+
+OASIS-1:
+
+416 subjects
+
+structural MRI
+
+dementia labels
+
+public and widely used
+
+The problem:
+
+Many published CNN results of 90–99% are not comparable.
+
+Common issues:
+
+slice-level leakage (multiple slices from same patient in train/test)
+
+subject leakage
+
+small test sets
+
+heavy augmentation
+
+non-independent validation
+
+A fair project could absolutely expose this.
+
+But a CPU-only 2D CNN competing against MRI deep-learning papers claiming 95%+ is unlikely to produce a clean “beat.”
+
+Your likely outcome:
+
+Proper subject-level split → performance drops.
+
+Your model may be competitive.
+
+But “state-of-the-art” is unlikely.
+
+The stronger angle
+
+Do not sell it as diagnosis.
+
+Sell:
+
+“Can lightweight interpretable MRI representations identify early neurodegenerative signatures under subject-independent validation?”
+
+Possible discoveries:
+
+Which brain regions contribute most?
+
+Can a small model recover known Alzheimer’s anatomical patterns?
+
+Does graph construction from regional embeddings reveal disease progression?
+
+The issue:
+
+OASIS-1 is old. Many judges know it.
+
+Verdict:
+
+Scientific validity: ★★★★☆
+
+Benchmark potential: ★★★☆☆
+
+ISEF strength: ★★★☆☆
+
+If replacing them, I would replace both.
+
+Your suite already has multiple deep-learning diagnosis projects. The weakest additions will be saturated small datasets.
+
+You need diseases where:
+
+public accession exists,
+
+labels are real,
+
+there is biological heterogeneity,
+
+models can fail,
+
+discovery is possible.
+
+Replacement 1: Idiopathic pulmonary fibrosis (IPF) diagnosis/prognosis
+Dataset
+
+Gene Expression Omnibus (GEO) GSE47460
+
+(Or similar GEO IPF cohorts.)
+
+Why better
+
+Unlike PCOS:
+
+transcriptomic data has thousands of dimensions
+
+disease biology is not trivially encoded
+
+pathways can be discovered
+
+CPU feasibility:
+
+Very feasible.
+
+Pipeline:
+
+dimensionality reduction
+
+MLP/GNN patient similarity graph
+
+pathway-aware embeddings
+
+Benchmark target
+
+Not “accuracy.”
+
+Use:
+
+AUROC
+
+balanced accuracy
+
+external cohort validation
+
+against published classifiers.
+
+Discovery angle
+
+“A graph neural network identifies a reproducible molecular subtype of IPF linked to fibrosis pathways.”
+
+The discovery is not the classifier.
+
+The discovery is:
+
+IPF patients separate into molecular states with different pathway activation.
+
+Replacement 2: Sepsis diagnosis from transcriptomics
+Dataset
+
+Gene Expression Omnibus (GEO) GSE65682
+
+Why better
+
+Huge advantage:
+
+thousands of genes
+
+clinically meaningful
+
+heterogeneous disease
+
+real unmet need
+
+CPU feasible.
+
+Models:
+
+patient similarity graph
+
+GCN/GAT
+
+pathway-informed features
+
+Discovery angle
+
+“Graph-based immune-state mapping reveals sepsis molecular endotypes that are not captured by traditional case/control classification.”
+
+This is much stronger than:
+
+“Our neural network gets 96%.”
+
+My final two picks
+
+If your suite already has four diseases, I would choose:
+
+Disease 4: Sepsis transcriptomic diagnosis
+Benchmark claim
+
+Defensible:
+
+“Our model improves over published sepsis transcriptomic classifiers under identical patient-level validation.”
+
+Need:
+
+same split
+
+no gene leakage
+
+external cohort
+
+Discovery
+
+Immune endotype discovery.
+
+Concrete:
+
+Identify patient clusters characterized by:
+
+interferon response
+
+innate immune activation
+
+metabolic suppression
+
+Then validate enrichment statistically.
+
+Disease 5: Alzheimer's — but not OASIS CNN diagnosis
+
+I would pivot Alzheimer’s.
+
+Use:
+
+Alzheimer's blood transcriptomics
+
+Dataset examples:
+
+Gene Expression Omnibus (GEO) GSE63060
+
+Why:
+
+CPU friendly
+
+no MRI storage problem
+
+thousands of genes
+
+biology discovery possible
+
+Benchmark claim
+
+More defensible:
+
+Compare against published gene-expression classifiers.
+
+Discovery
+
+Patient similarity graph reveals molecular Alzheimer’s subtypes.
+
+Example:
+
+inflammatory subtype
+
+mitochondrial dysfunction subtype
+
+synaptic dysfunction subtype
+
+Ranking your four options
+Project	Benchmark defensibility	Discovery potential	ISEF strength
+Sepsis transcriptomics	High	High	★★★★★
+AD transcriptomics	High	High	★★★★★
+AD MRI OASIS	Medium	Medium	★★★
+PCOS Kaggle	Low-medium	Low	★★
+
+My recommendation: drop PCOS entirely unless your entire goal is a leakage-audit methods paper. Drop OASIS MRI unless you have a genuinely novel interpretability/discovery component. Replace both with transcriptomic diseases where your GNN architecture actually has biological justification.
+
+The strongest common theme for your suite would become:
+
+“Deep patient-similarity graphs uncover hidden disease states from public clinical omics datasets under leakage-controlled evaluation.”
+
+That is much closer to an ISEF-level computational biology narrative than another small clinical classifier.
